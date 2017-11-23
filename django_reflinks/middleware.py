@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+
 from .models import ReferralHit, ReferralLink
 
 
@@ -8,14 +10,18 @@ class AnonymousReferralMiddleware:
 		self.get_response = get_response
 
 	def __call__(self, request):
+		response = self.get_response(request)
+
 		if request.user.is_authenticated:
 			if self.REFERRAL_COOKIE_KEY in request.cookies:
 				value = request.cookies[self.REFERRAL_COOKIE_KEY]
-				# XXX test with invalid uuid
-				hits = ReferralHit.objects.filter(uuid=value).update(user=request.user)
-				delete_cookie(self.REFERRAL_COOKIE_KEY, request)
+				try:
+					ReferralHit.objects.filter(uuid=value).update(user=request.user)
+				except ValidationError:
+					# A bad ID was stored in the cookie (non-uuid)
+					pass
+				response.delete_cookie(self.REFERRAL_COOKIE_KEY)
 
-		response = self.get_response(request)
 		return response
 
 
