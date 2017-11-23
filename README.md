@@ -68,3 +68,9 @@ model is there as a convenience model to allow you to filter down the referral h
 Upon creating a ConfirmedReferral you may also want to do something else, such as crediting a
 user some points.
 The atomicity and idempotency of such events is left as an exercise for the reader.
+
+
+## License
+
+This project is licensed under the MIT license. The full license text is
+available in the LICENSE file.
