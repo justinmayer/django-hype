@@ -48,3 +48,23 @@ Example:
  - `/accounts/signup/?ref=abc123def` redirects to...
  - `/ref/abs123def?next=/accounts/signup/` which redirects to...
  - `/accounts/signup/`, after creating a ReferralHit.
+
+
+## Setup and configuration
+
+1. Install django-reflinks
+2. Add `django_reflinks` to your `INSTALLED_APPS`
+3. Add an URL for `django_reflinks.views.ReferralView`
+4. Add `django_reflinks.middleware.AnonymousReferralMiddleware` to your `MIDDLEWARE`.
+   This is required to update referrals for anonymous users when they log in.
+5. (optional) Add `django_reflinks.middleware.ReferralLinkMiddleware` to your `MIDDLEWARE`.
+   This is required if you want `?ref=...` to redirect properly.
+
+These steps are enough to start gathering referral information.
+You create a referral link, and watch the `ReferralHit` table fill up as users follow it.
+
+In addition to having that data, you may want to "confirm" referrals. The `ConfirmedReferral`
+model is there as a convenience model to allow you to filter down the referral hits in question.
+Upon creating a ConfirmedReferral you may also want to do something else, such as crediting a
+user some points.
+The atomicity and idempotency of such events is left as an exercise for the reader.
