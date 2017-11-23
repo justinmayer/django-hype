@@ -1,4 +1,7 @@
+from urllib.parse import urlencode
+
 from django.core.exceptions import ValidationError
+from django.utils.shortcuts import redirect
 
 from .models import ReferralHit, ReferralLink
 from .settings import REFERRAL_COOKIE_KEY, REFERRAL_URL_PARAM
@@ -38,11 +41,17 @@ class ReferralLinkMiddleware:
 
 			params = request.GET.copy()
 			del params[REFERRAL_URL_PARAM]
-			orig_path = makeparams(request.path, params)
+			orig_path = request.path
+			if params:
+				orig_path += "?" + urlencode(params)
 
-			final_path = makeparams(ref_link.get_absolute_url(), {"next": orig_path})
+			final_path = ref_link.get_absolute_url() + "?" + urlencode({"next": orig_path})
 
-			return redirect(final_path)
+			response = redirect(final_path)
+		else:
+			response = self.get_response(request)
+
+		return response
 
 		# Check the original IP; only proceed if it's not a "real" IP
 		ip = request.META.get("REMOTE_ADDR", "127.0.0.1")
