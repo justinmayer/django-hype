@@ -1,11 +1,10 @@
 from django.core.exceptions import ValidationError
 
 from .models import ReferralHit, ReferralLink
+from .settings import REFERRAL_COOKIE_KEY, REFERRAL_URL_PARAM
 
 
 class AnonymousReferralMiddleware:
-	REFERRAL_COOKIE_KEY = "django-reflinks__rk"
-
 	def __init__(self, get_response):
 		self.get_response = get_response
 
@@ -13,7 +12,7 @@ class AnonymousReferralMiddleware:
 		response = self.get_response(request)
 
 		if request.user.is_authenticated:
-			if self.REFERRAL_COOKIE_KEY in request.cookies:
+			if REFERRAL_COOKIE_KEY in request.cookies:
 				value = request.cookies[self.REFERRAL_COOKIE_KEY]
 				try:
 					ReferralHit.objects.filter(uuid=value).update(user=request.user)
@@ -26,21 +25,19 @@ class AnonymousReferralMiddleware:
 
 
 class ReferralLinkMiddleware:
-	REFERRAL_KEY = "ref"
-
 	def __init__(self, get_response):
 		self.get_response = get_response
 
 	def __call__(self, request):
-		if request.method == "GET" and self.REFERRAL_KEY in request.GET:
-			ref_id = request.GET[self.REFERRAL_KEY]
+		if request.method == "GET" and REFERRAL_URL_PARAM in request.GET:
+			ref_id = request.GET[REFERRAL_URL_PARAM]
 			try:
 				ref_link = ReferralLink.objects.get(identifier=ref_id)
 			except ReferralLink.DoesNotExist:
 				return self.get_response(request)
 
 			params = request.GET.copy()
-			del params[self.REFERRAL_KEY]
+			del params[REFERRAL_URL_PARAM]
 			orig_path = makeparams(request.path, params)
 
 			final_path = makeparams(ref_link.get_absolute_url(), {"next": orig_path})

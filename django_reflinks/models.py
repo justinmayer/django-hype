@@ -4,9 +4,6 @@ from django.conf import settings
 from django.db import models
 
 
-COOKIE_KEY = "django_reflinks__rk"
-
-
 class ReferralHitManager(models.Manager):
 	pass
 
