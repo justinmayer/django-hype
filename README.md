@@ -6,17 +6,12 @@ A Django module that implements referral link logic.
 ## Concepts
 
 
-This library implements three models:
+This library implements two models:
 
 - The `ReferralLink`. This object represents a user's referral link, or invitation link.
   It has a string identifier which allows the user to share their link as `/ref/<refid>/`.
 - The `ReferralHit`. This is an instance of a user (logged in or anonymous) actually following
   a referral link.
-- The `ConfirmedReferral`. This is created when a user who previously followed a `ReferralLink`
-  (and thus created a `ReferralHit`) actually completes whichever steps the referral system
-  requires referred users to complete (for example: Register to the website, make their first
-  purchase, post their first comment, ...).
-
 
 ## The Anonymous Cookie
 
@@ -34,7 +29,12 @@ see `django_reflinks.middleware.AnonymousReferralMiddleware`.
 
 ## Confirming referrals
 
-ConfirmedReferral is created at the implementer's discretion.
+You may wish to implement a `SuccessfulReferral` model which is created when a user who
+previously followed a `ReferralLink` (and thus created a `ReferralHit`) actually completes
+whichever steps the referral system requires referred users to complete (for example:
+Register to the website, make their first purchase, post their first comment, ...).
+
+The `ReferralHit` model also has a `confirmed` DateTimeField which you may use for this purpose.
 
 
 ## Supporting referral links on any URL.

@@ -25,22 +25,19 @@ class ReferralLink(models.Model):
 class ReferralHit(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 	referral_link = models.ForeignKey(ReferralLink, on_delete=models.CASCADE)
+	authenticated = models.BooleanField(
+		help_text="Whether the hit was created by an authenticated user."
+	)
 	hit_user = models.ForeignKey(
-		settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
+		settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
 	)
 	ip = models.GenericIPAddressField(help_text="IP address at hit time")
-	user_agent = models.TextField(blank=True, help_text="UA at hit time")
+	user_agent = models.TextField(blank=True, help_text="User-Agent at hit time")
 	next = models.URLField(blank=True, help_text="The ?next parameter when the link was hit.")
-
-	created = models.DateTimeField(auto_now_add=True)
-	updated = models.DateTimeField(auto_now=True)
-
-
-class ConfirmedReferral(models.Model):
-	referral_hit = models.ForeignKey(ReferralHit, on_delete=models.CASCADE)
-	referred_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	ip = models.GenericIPAddressField(help_text="IP address at subscription time")
-	user_agent = models.TextField(help_text="UA at subscription time")
+	confirmed = models.DateTimeField(
+		null=True, db_index=True,
+		help_text="If set, the datetime at which the hit was marked as a successful referral."
+	)
 
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)

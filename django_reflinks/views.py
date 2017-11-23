@@ -18,12 +18,13 @@ class ReferralView(View):
 		if ref_link.disabled:
 			return self.fail("referral_disabled")
 
+		self.next = self.request.GET.get("next", "")
+
 		return self.success(ref_link)
 
 	def get_success_url(self):
-		success_url = self.request.GET.get("next", "")
-		if success_url and is_safe_url(success_url):
-			return success_url
+		if self.next and is_safe_url(self.next):
+			return self.next
 		return self.success_url
 
 	def success(self, ref_link):
@@ -35,10 +36,13 @@ class ReferralView(View):
 
 	def hit(self, ref_link):
 		user = self.request.user if self.request.user.is_authenticated else None
-		ip = self.request.META["REMOTE_ADDR"]
-		ua = self.request.META.get("HTTP_USER_AGENT", "")
 		hit = ReferralHit.objects.create(
-			referral_link=ref_link, hit_user=user, hit_ip=ip, hit_user_agent=ua
+			referral_link=ref_link,
+			hit_user=user,
+			authenticated=user is not None,
+			ip=self.request.META["REMOTE_ADDR"],
+			user_agent=self.request.META.get("HTTP_USER_AGENT", ""),
+			next=self.next
 		)
 
 		# TODO: set_cookie()
