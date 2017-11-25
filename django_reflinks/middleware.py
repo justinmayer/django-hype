@@ -1,6 +1,6 @@
 from urllib.parse import urlencode
+from uuid import UUID
 
-from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
 
 from .models import ReferralHit, ReferralLink
@@ -15,14 +15,18 @@ class AnonymousReferralMiddleware:
 		response = self.get_response(request)
 
 		if request.user.is_authenticated:
-			if REFERRAL_COOKIE_KEY in request.cookies:
-				value = request.cookies[self.REFERRAL_COOKIE_KEY]
+			if REFERRAL_COOKIE_KEY in request.COOKIES:
+				value = request.COOKIES[REFERRAL_COOKIE_KEY]
+
 				try:
-					ReferralHit.objects.filter(uuid=value).update(user=request.user)
-				except ValidationError:
-					# A bad ID was stored in the cookie (non-uuid)
+					value = UUID(value)
+				except ValueError:
+					# A bad ID was stored in the cookie (non-uuid). Harmless.
 					pass
-				response.delete_cookie(self.REFERRAL_COOKIE_KEY)
+				else:
+					ReferralHit.objects.filter(pk=value).update(hit_user=request.user)
+
+				response.delete_cookie(REFERRAL_COOKIE_KEY)
 
 		return response
 

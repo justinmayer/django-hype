@@ -36,6 +36,8 @@ MIDDLEWARE = [
 	"django.contrib.sessions.middleware.SessionMiddleware",
 	"django.middleware.common.CommonMiddleware",
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
+	"django_reflinks.middleware.AnonymousReferralMiddleware",
+	"django_reflinks.middleware.ReferralLinkMiddleware",
 ]
 
 ROOT_URLCONF = "tests.urls"
