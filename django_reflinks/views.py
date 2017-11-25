@@ -9,6 +9,8 @@ class ReferralView(View):
 	success_url = "/"
 
 	def get(self, request, id):
+		self.next = self.request.GET.get("next", "")
+
 		try:
 			ref_link = ReferralLink.objects.get(identifier=id)
 		except ReferralLink.DoesNotExist:
@@ -17,8 +19,6 @@ class ReferralView(View):
 
 		if ref_link.disabled:
 			return self.fail("referral_disabled")
-
-		self.next = self.request.GET.get("next", "")
 
 		return self.success(ref_link)
 
