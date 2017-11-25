@@ -2,6 +2,7 @@ from django.shortcuts import redirect
 from django.utils.http import is_safe_url
 from django.views import View
 
+from . import settings
 from .models import ReferralHit, ReferralLink
 
 
@@ -10,6 +11,7 @@ class ReferralView(View):
 
 	def get(self, request, id):
 		self.next = self.request.GET.get("next", "")
+		self.cookie_value = None
 
 		try:
 			ref_link = ReferralLink.objects.get(identifier=id)
@@ -29,10 +31,24 @@ class ReferralView(View):
 
 	def success(self, ref_link):
 		self.hit(ref_link)
-		return redirect(self.get_success_url())
+		return self.redirect(self.get_success_url())
 
 	def fail(self, code):
-		return redirect(self.get_success_url())
+		return self.redirect(self.get_success_url())
+
+	def redirect(self, url):
+		response = redirect(url)
+
+		if self.cookie_value:
+			response.set_cookie(
+				settings.REFERRAL_COOKIE_KEY, self.cookie_value,
+				max_age=settings.REFERRAL_COOKIE_MAX_AGE,
+				httponly=settings.REFERRAL_COOKIE_HTTPONLY,
+			)
+		else:
+			response.delete_cookie(settings.REFERRAL_COOKIE_KEY)
+
+		return response
 
 	def hit(self, ref_link):
 		user = self.request.user if self.request.user.is_authenticated else None
@@ -45,5 +61,7 @@ class ReferralView(View):
 			next=self.next
 		)
 
-		# TODO: set_cookie()
+		if user is None:
+			self.cookie_value = str(hit.pk)
+
 		return hit
