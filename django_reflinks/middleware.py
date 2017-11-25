@@ -56,15 +56,3 @@ class ReferralLinkMiddleware:
 			response = self.get_response(request)
 
 		return response
-
-		# Check the original IP; only proceed if it's not a "real" IP
-		ip = request.META.get("REMOTE_ADDR", "127.0.0.1")
-		if ip in self.INTERNAL_IPS and self.HEADER in request.META:
-			value = request.META[self.HEADER]
-			# HTTP_X_FORWARDED_FOR can be a comma-separated list of IPs. The
-			# client's IP will be the first one.
-			real_ip = value.split(",")[0].strip()
-			request.META["REMOTE_ADDR"] = real_ip
-
-		response = self.get_response(request)
-		return response

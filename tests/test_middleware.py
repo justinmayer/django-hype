@@ -43,3 +43,14 @@ def test_anonymous_middleware_bad_cookie(admin_client, ref_link):
 	})
 	response = admin_client.get("/foo")
 	assert response.status_code == 404
+
+
+def test_referral_link_middleware(admin_client, ref_link):
+	ref_link_url = ref_link.get_absolute_url()
+
+	response = admin_client.get("/foo?ref=" + ref_link.identifier)
+	assert response.status_code == 302
+	assert response.url == ref_link_url + "?next=%2Ffoo"
+
+	response = admin_client.post("/foo?ref=" + ref_link.identifier)
+	assert response.status_code == 404
