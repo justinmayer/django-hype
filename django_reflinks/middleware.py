@@ -1,7 +1,7 @@
 from urllib.parse import urlencode
 
 from django.core.exceptions import ValidationError
-from django.utils.shortcuts import redirect
+from django.shortcuts import redirect
 
 from .models import ReferralHit, ReferralLink
 from .settings import REFERRAL_COOKIE_KEY, REFERRAL_URL_PARAM

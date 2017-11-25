@@ -1,5 +1,5 @@
+from django.shortcuts import redirect
 from django.utils.http import is_safe_url
-from django.utils.shortcuts import redirect
 from django.views import View
 
 from .models import ReferralHit, ReferralLink
