@@ -36,7 +36,7 @@ class ReferralHit(models.Model):
 	user_agent = models.TextField(blank=True, help_text="User-Agent at hit time")
 	next = models.URLField(blank=True, help_text="The ?next parameter when the link was hit.")
 	confirmed = models.DateTimeField(
-		null=True, db_index=True,
+		null=True, blank=True, db_index=True,
 		help_text="If set, the datetime at which the hit was marked as a successful referral."
 	)
 

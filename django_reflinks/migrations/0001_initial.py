@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('ip', models.GenericIPAddressField(help_text='IP address at hit time')),
                 ('user_agent', models.TextField(blank=True, help_text='User-Agent at hit time')),
                 ('next', models.URLField(blank=True, help_text='The ?next parameter when the link was hit.')),
-                ('confirmed', models.DateTimeField(db_index=True, help_text='If set, the datetime at which the hit was marked as a successful referral.', null=True)),
+                ('confirmed', models.DateTimeField(db_index=True, help_text='If set, the datetime at which the hit was marked as a successful referral.', null=True, blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('hit_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
