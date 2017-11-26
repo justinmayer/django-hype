@@ -19,6 +19,9 @@ class ReferralLink(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 
+	def __str__(self):
+		return self.get_absolute_url()
+
 	def get_absolute_url(self):
 		return reverse("django_reflinks_reflink", kwargs={"identifier": self.identifier})
 
