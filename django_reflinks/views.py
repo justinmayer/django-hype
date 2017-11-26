@@ -9,12 +9,12 @@ from .models import ReferralHit, ReferralLink
 class ReferralView(View):
 	success_url = "/"
 
-	def get(self, request, id):
+	def get(self, request, identifier):
 		self.next = self.request.GET.get("next", "")
 		self.cookie_value = None
 
 		try:
-			ref_link = ReferralLink.objects.get(identifier=id)
+			ref_link = ReferralLink.objects.get(identifier=identifier)
 		except ReferralLink.DoesNotExist:
 			# metrics.send("broken_referral", ...)
 			return self.fail("broken_referral")

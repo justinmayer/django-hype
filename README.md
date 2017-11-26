@@ -54,7 +54,7 @@ Example:
 
 1. Install django-reflinks
 2. Add `django_reflinks` to your `INSTALLED_APPS`
-3. Add an URL for `django_reflinks.views.ReferralView`
+3. Include `django_reflinks.urls` in your urls. Example: `url(r"^ref/", include("django_reflinks.urls"))`
 4. Add `django_reflinks.middleware.AnonymousReferralMiddleware` to your `MIDDLEWARE`.
    This is required to update referrals for anonymous users when they log in.
 5. (optional) Add `django_reflinks.middleware.ReferralLinkMiddleware` to your `MIDDLEWARE`.

@@ -1,10 +1,8 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 from django.contrib import admin
-
-from django_reflinks.views import ReferralView
 
 
 urlpatterns = [
 	url(r"^admin/", admin.site.urls),
-	url(r"^ref/(?P<id>\w+)$", ReferralView.as_view()),
+	url(r"^ref/", include("django_reflinks.urls")),
 ]

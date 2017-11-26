@@ -2,6 +2,7 @@ from uuid import uuid4
 
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 
 class ReferralHitManager(models.Manager):
@@ -19,7 +20,7 @@ class ReferralLink(models.Model):
 	updated = models.DateTimeField(auto_now=True)
 
 	def get_absolute_url(self):
-		return "/ref/{}".format(self.identifier)
+		return reverse("django_reflinks_reflink", kwargs={"identifier": self.identifier})
 
 
 class ReferralHit(models.Model):
