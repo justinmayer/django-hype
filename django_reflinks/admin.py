@@ -16,6 +16,6 @@ class ReferralHitAdmin(admin.ModelAdmin):
 	list_display = (
 		"id", "referral_link", "hit_user", "authenticated", "ip", "created", "updated"
 	)
-	list_filter = ("disabled", )
+	list_filter = ("authenticated", )
 	raw_id_fields = ("referral_link", "hit_user")
 	search_fields = ("id", "referral_link__identifier")
