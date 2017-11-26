@@ -19,3 +19,6 @@ class ReferralHitAdmin(admin.ModelAdmin):
 	list_filter = ("authenticated", )
 	raw_id_fields = ("referral_link", "hit_user")
 	search_fields = ("id", "referral_link__identifier")
+
+	def has_add_permission(self, request):
+		return False
