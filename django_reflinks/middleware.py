@@ -14,7 +14,7 @@ class AnonymousReferralMiddleware:
 	def __call__(self, request):
 		response = self.get_response(request)
 
-		if request.user.is_authenticated:
+		if request.user and request.user.is_authenticated:
 			if REFERRAL_COOKIE_KEY in request.COOKIES:
 				value = request.COOKIES[REFERRAL_COOKIE_KEY]
 
