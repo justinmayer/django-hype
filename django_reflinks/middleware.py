@@ -24,7 +24,9 @@ class AnonymousReferralMiddleware:
 					# A bad ID was stored in the cookie (non-uuid). Harmless.
 					pass
 				else:
-					ReferralHit.objects.filter(pk=value).update(hit_user=request.user)
+					ReferralHit.objects.filter(pk=value, hit_user=None).update(
+						hit_user=request.user
+					)
 
 				response.delete_cookie(REFERRAL_COOKIE_KEY)
 
