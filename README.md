@@ -1,5 +1,7 @@
 # Django Reflinks
 
+[![Build Status](https://api.travis-ci.org/HearthSim/django-reflinks.svg?branch=master)](https://travis-ci.org/HearthSim/django-reflinks)
+
 A Django module that implements referral link logic.
 
 

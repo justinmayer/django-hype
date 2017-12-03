@@ -3,7 +3,7 @@ from django.utils.http import is_safe_url
 from django.views import View
 
 from .models import ReferralHit, ReferralLink
-from .settings import COOKIE_KEY, COOKIE_HTTPONLY, COOKIE_MAX_AGE
+from .settings import COOKIE_HTTPONLY, COOKIE_KEY, COOKIE_MAX_AGE
 
 
 class ReferralView(View):
@@ -16,7 +16,6 @@ class ReferralView(View):
 		try:
 			ref_link = ReferralLink.objects.get(identifier=identifier)
 		except ReferralLink.DoesNotExist:
-			# metrics.send("broken_referral", ...)
 			return self.fail("broken_referral")
 
 		if ref_link.disabled:
