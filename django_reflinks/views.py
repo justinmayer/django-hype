@@ -2,8 +2,8 @@ from django.shortcuts import redirect
 from django.utils.http import is_safe_url
 from django.views import View
 
-from . import settings
 from .models import ReferralHit, ReferralLink
+from .settings import COOKIE_KEY, COOKIE_HTTPONLY, COOKIE_MAX_AGE
 
 
 class ReferralView(View):
@@ -41,12 +41,12 @@ class ReferralView(View):
 
 		if self.cookie_value:
 			response.set_cookie(
-				settings.REFERRAL_COOKIE_KEY, self.cookie_value,
-				max_age=settings.REFERRAL_COOKIE_MAX_AGE,
-				httponly=settings.REFERRAL_COOKIE_HTTPONLY,
+				COOKIE_KEY, self.cookie_value,
+				max_age=COOKIE_MAX_AGE,
+				httponly=COOKIE_HTTPONLY,
 			)
 		else:
-			response.delete_cookie(settings.REFERRAL_COOKIE_KEY)
+			response.delete_cookie(COOKIE_KEY)
 
 		return response
 

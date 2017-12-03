@@ -4,7 +4,7 @@ from uuid import UUID
 from django.shortcuts import redirect
 
 from .models import ReferralHit, ReferralLink
-from .settings import REFERRAL_COOKIE_KEY, REFERRAL_URL_PARAM
+from .settings import COOKIE_KEY, URL_PARAM
 
 
 class AnonymousReferralMiddleware:
@@ -15,8 +15,8 @@ class AnonymousReferralMiddleware:
 		response = self.get_response(request)
 
 		if request.user and request.user.is_authenticated:
-			if REFERRAL_COOKIE_KEY in request.COOKIES:
-				value = request.COOKIES[REFERRAL_COOKIE_KEY]
+			if COOKIE_KEY in request.COOKIES:
+				value = request.COOKIES[COOKIE_KEY]
 
 				try:
 					value = UUID(value)
@@ -28,7 +28,7 @@ class AnonymousReferralMiddleware:
 						hit_user=request.user
 					)
 
-				response.delete_cookie(REFERRAL_COOKIE_KEY)
+				response.delete_cookie(COOKIE_KEY)
 
 		return response
 
@@ -38,15 +38,15 @@ class ReferralLinkMiddleware:
 		self.get_response = get_response
 
 	def __call__(self, request):
-		if request.method == "GET" and REFERRAL_URL_PARAM in request.GET:
-			ref_id = request.GET[REFERRAL_URL_PARAM]
+		if request.method == "GET" and URL_PARAM in request.GET:
+			ref_id = request.GET[URL_PARAM]
 			try:
 				ref_link = ReferralLink.objects.get(identifier=ref_id)
 			except ReferralLink.DoesNotExist:
 				return self.get_response(request)
 
 			params = request.GET.copy()
-			del params[REFERRAL_URL_PARAM]
+			del params[URL_PARAM]
 			orig_path = request.path
 			if params:
 				orig_path += "?" + urlencode(params)

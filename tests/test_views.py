@@ -12,7 +12,7 @@ def test_referral_logged_in(admin_client, ref_link):
 	response = client.get(ref_link_url, HTTP_USER_AGENT="TestAgent")
 	assert response.status_code == 302
 	assert response.url == "/"
-	assert response.cookies[settings.REFERRAL_COOKIE_KEY].value == ""
+	assert response.cookies[settings.COOKIE_KEY].value == ""
 
 	assert ReferralHit.objects.count() == 1
 	hit = ReferralHit.objects.latest("created")
@@ -34,7 +34,7 @@ def test_referral_logged_in(admin_client, ref_link):
 	assert hit.hit_user == response.wsgi_request.user
 	assert hit.next == next
 	assert not hit.confirmed
-	assert response.cookies[settings.REFERRAL_COOKIE_KEY].value == ""
+	assert response.cookies[settings.COOKIE_KEY].value == ""
 
 
 @pytest.mark.django_db
@@ -54,7 +54,7 @@ def test_referral_logged_out(client, ref_link):
 	assert not hit.next
 	assert not hit.confirmed
 
-	cookie = response.cookies[settings.REFERRAL_COOKIE_KEY]
+	cookie = response.cookies[settings.COOKIE_KEY]
 	assert cookie.value == str(hit.pk)
 
 	next = "/foo"
@@ -69,5 +69,5 @@ def test_referral_logged_out(client, ref_link):
 	assert hit.next == next
 	assert not hit.confirmed
 
-	cookie = response.cookies[settings.REFERRAL_COOKIE_KEY]
+	cookie = response.cookies[settings.COOKIE_KEY]
 	assert cookie.value == str(hit.pk)
