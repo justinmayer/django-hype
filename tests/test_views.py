@@ -9,7 +9,8 @@ def test_referral_logged_in(admin_client, ref_link):
 	ref_link_url = ref_link.get_absolute_url()
 	client = admin_client
 
-	response = client.get(ref_link_url, HTTP_USER_AGENT="TestAgent")
+	ref = "https://example.com"
+	response = client.get(ref_link_url, HTTP_USER_AGENT="TestAgent", HTTP_REFERER=ref)
 	assert response.status_code == 302
 	assert response.url == "/"
 	assert response.cookies[settings.COOKIE_KEY].value == ""
@@ -20,6 +21,7 @@ def test_referral_logged_in(admin_client, ref_link):
 	assert hit.hit_user == response.wsgi_request.user
 	assert hit.ip == "127.0.0.1"
 	assert hit.user_agent == response.wsgi_request.META["HTTP_USER_AGENT"]
+	assert hit.http_referer == ref
 	assert not hit.next
 	assert not hit.confirmed
 

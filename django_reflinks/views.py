@@ -57,6 +57,7 @@ class ReferralView(View):
 			authenticated=user is not None,
 			ip=self.request.META["REMOTE_ADDR"],
 			user_agent=self.request.META.get("HTTP_USER_AGENT", ""),
+			http_referer=self.request.META.get("HTTP_REFERER", ""),
 			next=self.next
 		)
 
