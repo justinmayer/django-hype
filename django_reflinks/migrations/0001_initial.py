@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('confirmed', models.DateTimeField(db_index=True, help_text='If set, the datetime at which the hit was marked as a successful referral.', null=True, blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
-                ('hit_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                ('hit_user', models.ForeignKey(null=True, blank=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(

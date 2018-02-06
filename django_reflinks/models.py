@@ -33,7 +33,7 @@ class ReferralHit(models.Model):
 		help_text="Whether the hit was created by an authenticated user."
 	)
 	hit_user = models.ForeignKey(
-		settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
+		settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True
 	)
 	ip = models.GenericIPAddressField(help_text="IP address at hit time")
 	user_agent = models.TextField(blank=True, help_text="User-Agent at hit time")
