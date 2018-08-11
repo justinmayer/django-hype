@@ -24,7 +24,7 @@ class ReferralView(View):
 		return self.success(ref_link)
 
 	def get_success_url(self):
-		if self.next and is_safe_url(self.next):
+		if self.next and is_safe_url(self.next, allowed_hosts=None):
 			return self.next
 		return self.success_url
 
