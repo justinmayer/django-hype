@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.utils.http import is_safe_url
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views import View
 
 from .models import ReferralHit, ReferralLink
@@ -24,7 +24,7 @@ class ReferralView(View):
 		return self.success(ref_link)
 
 	def get_success_url(self):
-		if self.next and is_safe_url(self.next, allowed_hosts=None):
+		if self.next and url_has_allowed_host_and_scheme(self.next, allowed_hosts=None):
 			return self.next
 		return self.success_url
 

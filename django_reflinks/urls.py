@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 from .views import ReferralView
 
@@ -6,5 +6,5 @@ from .views import ReferralView
 # app_name = "django_reflinks"
 
 urlpatterns = [
-	url(r"^(?P<identifier>\w+)$", ReferralView.as_view(), name="django_reflinks_reflink"),
+	re_path(r"^(?P<identifier>\w+)$", ReferralView.as_view(), name="django_reflinks_reflink"),
 ]
