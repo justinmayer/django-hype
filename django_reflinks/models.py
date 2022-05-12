@@ -10,6 +10,7 @@ class ReferralHitManager(models.Manager):
 
 
 class ReferralLink(models.Model):
+	id = models.AutoField(primary_key=True, serialize=False, verbose_name="ID")
 	identifier = models.CharField(max_length=50, blank=True, unique=True)
 	user = models.ForeignKey(
 		settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
