@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "django-hype"
+version = "1.0.0"
+description = "Referral links for Django"
+authors = ["Justin Mayer <entroP@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+keywords = ["django", "referral", "links"]
+packages = [
+    { include = "hype" },
+]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.urls]
+"Funding" = "https://github.com/sponsors/justinmayer"
+"Issue Tracker" = "https://github.com/justinmayer/django-hype/issues"
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
+Django = ">=3.2"
+
+[tool.poetry.group.dev.dependencies]
+# Testing
+psutil = ">=5.9"
+pytest = "~7.1"
+pytest-cov = ">=3.0"
+pytest-django = ">=4.5"
+pytest-icdiff = ">=0.5"
+pytest-randomly = ">=3.11"
+pytest-sugar = ">=0.9"
+pytest-xdist = ">=2.5"
+
+# Linting
+black = "^22"
+isort = ">=5.10"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
