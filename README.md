@@ -1,6 +1,4 @@
-# Django Reflinks
-
-[![Build Status](https://api.travis-ci.org/HearthSim/django-reflinks.svg?branch=master)](https://travis-ci.org/HearthSim/django-reflinks)
+# Hype
 
 A Django module that implements referral link logic.
 
@@ -26,10 +24,10 @@ The cookie contains a random UUID which is set on the ReferralHit. At any time, 
 that cookie and, should the user log in, update all ReferralHit objects with that matching
 UUID.
 The library includes a middleware which will automatically do this for every logged in users,
-see `django_reflinks.middleware.AnonymousReferralMiddleware`.
+see `hype.middleware.AnonymousReferralMiddleware`.
 
 
-## Confirming referrals
+## Confirming Referrals
 
 You may wish to implement a `SuccessfulReferral` model which is created when a user who
 previously followed a `ReferralLink` (and thus created a `ReferralHit`) actually completes
@@ -39,10 +37,10 @@ Register to the website, make their first purchase, post their first comment, ..
 The `ReferralHit` model also has a `confirmed` DateTimeField which you may use for this purpose.
 
 
-## Supporting referral links on any URL.
+## Supporting Referral Links on Any URL
 
 Implementers may find it useful to allow a referral on any URL. This is implemented in the
-`django_reflinks.middleware.ReferralLinkMiddleware` middleware, which looks at all GET requests
+`hype.middleware.ReferralLinkMiddleware` middleware, which looks at all GET requests
 and, should a valid referral link be present in the GET parameters, redirects to that referral
 link's URL with the `next` parameter set to the original URL, without the referral link present.
 
@@ -54,12 +52,12 @@ Example:
 
 ## Setup and configuration
 
-1. Install django-reflinks
-2. Add `django_reflinks` to your `INSTALLED_APPS`
-3. Include `django_reflinks.urls` in your urls. Example: `url(r"^ref/", include("django_reflinks.urls"))`
-4. Add `django_reflinks.middleware.AnonymousReferralMiddleware` to your `MIDDLEWARE`.
+1. Install via `python -m pip install django-hype`
+2. Add `hype` to your `INSTALLED_APPS`
+3. Include `hype.urls` in your URLs. Example: `url(r"^ref/", include("hype.urls"))`
+4. Add `hype.middleware.AnonymousReferralMiddleware` to your `MIDDLEWARE`.
    This is required to update referrals for anonymous users when they log in.
-5. (optional) Add `django_reflinks.middleware.ReferralLinkMiddleware` to your `MIDDLEWARE`.
+5. (optional) Add `hype.middleware.ReferralLinkMiddleware` to your `MIDDLEWARE`.
    This is required if you want `?ref=...` to redirect properly.
 
 These steps are enough to start gathering referral information.

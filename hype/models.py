@@ -24,7 +24,7 @@ class ReferralLink(models.Model):
 		return self.get_absolute_url()
 
 	def get_absolute_url(self):
-		return reverse("django_reflinks_reflink", kwargs={"identifier": self.identifier})
+		return reverse("hype_reflink", kwargs={"identifier": self.identifier})
 
 
 class ReferralHit(models.Model):

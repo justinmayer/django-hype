@@ -1,7 +1,7 @@
 import pytest
 
-from django_reflinks import settings
-from django_reflinks.models import ReferralHit
+from hype import settings
+from hype.models import ReferralHit
 
 
 @pytest.mark.django_db

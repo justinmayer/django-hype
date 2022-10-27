@@ -21,6 +21,7 @@ class Migration(migrations.Migration):
                 ('authenticated', models.BooleanField(help_text='Whether the hit was created by an authenticated user.')),
                 ('ip', models.GenericIPAddressField(help_text='IP address at hit time')),
                 ('user_agent', models.TextField(blank=True, help_text='User-Agent at hit time')),
+                ('http_referer', models.TextField(blank=True, help_text='Referrer header at hit time')),
                 ('next', models.URLField(blank=True, help_text='The ?next parameter when the link was hit.')),
                 ('confirmed', models.DateTimeField(db_index=True, help_text='If set, the datetime at which the hit was marked as a successful referral.', null=True, blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
@@ -31,7 +32,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ReferralLink',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID')),
                 ('identifier', models.CharField(blank=True, max_length=50, unique=True)),
                 ('disabled', models.BooleanField(default=False)),
                 ('created', models.DateTimeField(auto_now_add=True)),
@@ -42,6 +43,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='referralhit',
             name='referral_link',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='django_reflinks.ReferralLink'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hype.ReferralLink'),
         ),
     ]

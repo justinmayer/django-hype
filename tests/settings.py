@@ -15,7 +15,7 @@ INSTALLED_APPS = [
 	"django.contrib.auth",
 	"django.contrib.contenttypes",
 	"django.contrib.sessions",
-	"django_reflinks",
+	"hype",
 ]
 
 TEMPLATES = [{
@@ -36,8 +36,8 @@ MIDDLEWARE = [
 	"django.contrib.sessions.middleware.SessionMiddleware",
 	"django.middleware.common.CommonMiddleware",
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
-	"django_reflinks.middleware.AnonymousReferralMiddleware",
-	"django_reflinks.middleware.ReferralLinkMiddleware",
+	"hype.middleware.AnonymousReferralMiddleware",
+	"hype.middleware.ReferralLinkMiddleware",
 ]
 
 ROOT_URLCONF = "tests.urls"

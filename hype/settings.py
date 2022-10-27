@@ -2,7 +2,7 @@ from django.conf import settings
 
 
 DJANGO_REFERRALS_SETTINGS = {
-	"COOKIE_KEY": "django-reflinks__rk",
+	"COOKIE_KEY": "django-hype__rk",
 	"COOKIE_HTTPONLY": True,
 	"COOKIE_MAX_AGE": 60 * 60 * 24 * 365,
 	"URL_PARAM": "ref",
